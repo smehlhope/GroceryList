@@ -1,0 +1,39 @@
+<h1>Grocery List</h1>
+<%= link_to 'Add New Item', new_item_path %>
+
+<br>
+
+<%= form_tag items_path, :method => 'get', :id => "items_search" do %>
+  <%= hidden_field_tag :direction, params[:direction] %>
+  <%= hidden_field_tag :sort, params[:sort] %>
+  <%= label_tag 'Search:' %>
+  <%= text_field_tag :search, params[:search] %>
+<% end %>
+
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= sortable "name", "Name" %></th>
+      <th><%= sortable "section", "Section" %></th>
+      <th><%= sortable "quantity", "Quantity" %></th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><a href="/items/<%= item.id %>"><%= item.name %></a></td>
+        <td><%= item.section %></td>
+        <td><%= item.quantity %></td>
+        <td><%= link_to 'Edit', edit_item_path(item) %></td>
+        <td><%= link_to 'Delete', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @items %>
+<br>
+
